@@ -22,11 +22,16 @@ object Application extends Controller {
       .withFollowRedirects(false)
       .get()
       .map { data =>
-      val slackUrl = String.format(slackPostURL, URLEncoder.encode(request.getQueryString("channel_id").getOrElse(""), "UTF-8"))
-      println("Posting to " + slackUrl)
-      WS.url(slackUrl).post(data.header("Location").getOrElse(""))
-      Ok("Enjoy your kitty!")
+      postToSlackAPI(data.header("Location").getOrElse(""))
+      Ok("")
     }
+  }
+
+  private def postToSlackAPI(content: String)
+                            (implicit request: Request[AnyContent]): Unit = {
+    val slackUrl = String.format(slackPostURL, URLEncoder.encode(request.getQueryString("channel_id").getOrElse(""), "UTF-8"))
+    println("Posting to " + slackUrl)
+    WS.url(slackUrl).post("Enjoy your kitty!\n" + content)
   }
 
 }
