@@ -17,6 +17,7 @@ object Application extends Controller {
   }
 
   def kitty = Action.async { implicit request =>
+    println(request.rawQueryString)
     WS.url("http://thecatapi.com/api/images/get?format=src&type=gif")
       .withFollowRedirects(false)
       .get()
