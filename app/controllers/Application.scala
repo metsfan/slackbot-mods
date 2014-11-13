@@ -1,5 +1,7 @@
 package controllers
 
+import java.net.URLEncoder
+
 import play.api._
 import play.api.libs.ws.WS
 import play.api.mvc._
@@ -19,7 +21,7 @@ object Application extends Controller {
       .withFollowRedirects(false)
       .get()
       .map { data =>
-      val slackUrl = String.format(slackPostURL, request.getQueryString("channel_name").getOrElse(""))
+      val slackUrl = String.format(slackPostURL, URLEncoder.encode(request.getQueryString("channel_name").getOrElse(""), "UTF-8"))
       WS.url(slackUrl).post(data.header("Location").getOrElse(""))
       Ok("")
     }
