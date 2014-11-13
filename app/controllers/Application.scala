@@ -22,6 +22,7 @@ object Application extends Controller {
       .get()
       .map { data =>
       val slackUrl = String.format(slackPostURL, URLEncoder.encode(request.getQueryString("channel_name").getOrElse(""), "UTF-8"))
+      println("Posting to " + slackUrl)
       WS.url(slackUrl).post(data.header("Location").getOrElse(""))
       Ok("")
     }
